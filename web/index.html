@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clip Bill - Web Agent</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="chat-pane" aria-label="AI 对话助理">
+        <header class="pane-header">
+          <div>
+            <p class="eyebrow">Clip Bill Agent</p>
+            <h1>对话式账本</h1>
+          </div>
+          <span class="live-dot">在线</span>
+        </header>
+
+        <div id="messageList" class="message-list" aria-live="polite"></div>
+
+        <div id="typingIndicator" class="typing-indicator hidden">
+          <div class="lottie-mark">
+            <span></span><span></span><span></span>
+          </div>
+          <p id="typingText">AI 正在核算中...</p>
+        </div>
+
+        <form id="chatForm" class="input-console">
+          <input id="fileInput" type="file" accept="image/png,image/jpeg" hidden />
+          <button class="upload-button" id="uploadButton" type="button" title="上传账单截图">
+            <span>📸</span>
+            上传账单截图
+          </button>
+          <input
+            id="messageInput"
+            autocomplete="off"
+            placeholder="试试：人淡如菊是买的手抓饼，算餐饮"
+          />
+          <button class="send-button" type="submit" title="发送">发送</button>
+        </form>
+
+      </section>
+
+      <section class="dashboard-pane" aria-label="实时财务大屏">
+        <header class="dashboard-header">
+          <div>
+            <p class="eyebrow">Source of Truth</p>
+            <h2>实时财务大屏</h2>
+          </div>
+          <button id="refreshButton" class="ghost-button" type="button">刷新</button>
+        </header>
+
+        <section class="global-filter" aria-label="账本全局筛选">
+          <label class="month-picker">
+            <span>月份</span>
+            <select id="monthSelect"></select>
+          </label>
+          <div class="type-tabs" role="tablist" aria-label="收支切换">
+            <button id="expenseTab" class="type-tab active" type="button" data-type="支出">支出</button>
+            <button id="incomeTab" class="type-tab" type="button" data-type="收入">收入</button>
+          </div>
+          <button id="clearCategoryButton" class="clear-filter hidden" type="button"></button>
+        </section>
+
+        <section class="metric-grid">
+          <article class="metric-card">
+            <span id="incomeLabel">本月收入</span>
+            <strong id="incomeMetric">¥ 0.00</strong>
+          </article>
+          <article class="metric-card expense">
+            <span id="expenseLabel">本月支出</span>
+            <strong id="expenseMetric">¥ 0.00</strong>
+          </article>
+          <article class="metric-card balance">
+            <span id="balanceLabel">本月结余</span>
+            <strong id="balanceMetric">¥ 0.00</strong>
+          </article>
+          <article class="metric-card pending">
+            <span>待确认</span>
+            <strong id="pendingMetric">0</strong>
+          </article>
+        </section>
+
+        <section class="visual-grid">
+          <article class="chart-panel">
+            <div class="section-title">
+              <h3 id="pieTitle">支出分类</h3>
+              <span id="categoryTotal">¥ 0.00</span>
+            </div>
+            <div class="pie-wrap">
+              <div class="pie-stage">
+                <svg id="pieChart" class="pie-chart" viewBox="0 0 180 180" role="img" aria-label="分类扇形图"></svg>
+              </div>
+              <div id="pieLegend" class="legend"></div>
+            </div>
+          </article>
+          <article class="chart-panel">
+            <div class="section-title">
+              <h3>月度趋势</h3>
+              <span>收入 / 支出</span>
+            </div>
+            <div id="barChart" class="bar-chart"></div>
+          </article>
+        </section>
+
+        <section class="ledger-panel">
+          <div class="section-title">
+            <h3 id="ledgerTitle">动态流水</h3>
+            <span id="ledgerCount">0 笔</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>商户/说明</th>
+                  <th>类型</th>
+                  <th>分类</th>
+                  <th class="amount-cell">金额</th>
+                </tr>
+              </thead>
+              <tbody id="ledgerBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/assets/app.js"></script>
+  </body>
+</html>
